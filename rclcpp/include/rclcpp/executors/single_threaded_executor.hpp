@@ -29,7 +29,7 @@
 #include "rclcpp/utilities.hpp"
 #include "rclcpp/rate.hpp"
 #include "rclcpp/visibility_control.hpp"
-
+#include <mutex>
 namespace rclcpp
 {
 namespace executors
@@ -61,6 +61,7 @@ public:
   spin();
 
 private:
+  std::mutex spin_lock;
   RCLCPP_DISABLE_COPY(SingleThreadedExecutor);
 };
 

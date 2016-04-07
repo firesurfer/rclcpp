@@ -25,9 +25,12 @@ SingleThreadedExecutor::~SingleThreadedExecutor() {}
 void
 SingleThreadedExecutor::spin()
 {
+    
+  std::lock_guard<std::mutex> lock(spin_lock);
   if (spinning.exchange(true)) {
     throw std::runtime_error("spin_some() called while already spinning");
   }
+  
   RCLCPP_SCOPE_EXIT(this->spinning.store(false); );
   while (rclcpp::utilities::ok() && spinning.load()) {
     auto any_exec = get_next_executable();
